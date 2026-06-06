@@ -68,7 +68,7 @@
                 @empty
                 <tr>
                     <td colspan="7" class="px-6 py-10 text-center text-on-surface-variant">
-                        Belum ada data warga calon penerima BLT.
+                        Belum ada data warga calon penerima .
                     </td>
                 </tr>
                 @endforelse

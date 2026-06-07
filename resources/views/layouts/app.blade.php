@@ -109,19 +109,28 @@
             <p class="text-xs text-on-primary/60">Decision Support System</p>
         </div>
         <nav class="flex flex-col gap-2">
-            <a class="flex items-center gap-3 p-3 text-on-primary/70 hover:text-on-primary hover:bg-primary-container/20 transition-colors rounded-xl" href="#">
+            <a class="flex items-center gap-3 p-3 transition-colors rounded-xl {{ request()->is('dashboard') ? 'bg-on-primary-fixed-variant text-on-primary' : 'text-on-primary/70 hover:text-on-primary hover:bg-primary-container/20' }}" 
+               href="/dashboard">
                 <span class="material-symbols-outlined">dashboard</span><span>Dashboard</span>
             </a>
-            <a class="flex items-center gap-3 p-3 text-on-primary/70 hover:text-on-primary hover:bg-primary-container/20 transition-colors rounded-xl" href="#">
+            
+            <a class="flex items-center gap-3 p-3 transition-colors rounded-xl {{ request()->is('kriteria*') ? 'bg-on-primary-fixed-variant text-on-primary' : 'text-on-primary/70 hover:text-on-primary hover:bg-primary-container/20' }}" 
+               href="/kriteria">
                 <span class="material-symbols-outlined">list_alt</span><span>Kriteria</span>
             </a>
-            <a class="flex items-center gap-3 p-3 bg-on-primary-fixed-variant text-on-primary rounded-xl" href="#">
+            
+            <a class="flex items-center gap-3 p-3 transition-colors rounded-xl {{ request()->is('alternatif*') ? 'bg-on-primary-fixed-variant text-on-primary' : 'text-on-primary/70 hover:text-on-primary hover:bg-primary-container/20' }}" 
+               href="/alternatif">
                 <span class="material-symbols-outlined">groups</span><span>Alternatif</span>
             </a>
-            <a class="flex items-center gap-3 p-3 text-on-primary/70 hover:text-on-primary hover:bg-primary-container/20 transition-colors rounded-xl" href="#">
+            
+            <a class="flex items-center gap-3 p-3 transition-colors rounded-xl {{ request()->is('perhitungan*') ? 'bg-on-primary-fixed-variant text-on-primary' : 'text-on-primary/70 hover:text-on-primary hover:bg-primary-container/20' }}" 
+               href="/perhitungan">
                 <span class="material-symbols-outlined">calculate</span><span>Perhitungan</span>
             </a>
-            <a class="flex items-center gap-3 p-3 text-on-primary/70 hover:text-on-primary hover:bg-primary-container/20 transition-colors rounded-xl" href="#">
+            
+            <a class="flex items-center gap-3 p-3 transition-colors rounded-xl {{ request()->is('laporan*') ? 'bg-on-primary-fixed-variant text-on-primary' : 'text-on-primary/70 hover:text-on-primary hover:bg-primary-container/20' }}" 
+               href="/laporan">
                 <span class="material-symbols-outlined">description</span><span>Laporan</span>
             </a>
         </nav>
@@ -131,7 +140,7 @@
         <div class="flex items-center gap-4 w-1/3">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
-                <input class="w-full pl-10 pr-4 py-2 rounded-full border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-sm" placeholder="Cari data warga..." type="text"/>
+                <input class="w-full pl-10 pr-4 py-2 rounded-full border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-sm" placeholder="Cari data..." type="text"/>
             </div>
         </div>
         <div class="flex items-center gap-4">

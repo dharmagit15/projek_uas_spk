@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlternatifController;
+use App\Http\Controllers\KriteriaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -10,3 +11,13 @@ Route::get('/', function () {
 // Punya Kelola Alternatif (Jangan Ditimpa / Diubah)
 // ===================================================
 Route::resource('alternatif', AlternatifController::class);
+
+
+// Kelola Kriteria
+// ===================================================
+Route::get('/kriteria', [KriteriaController::class, 'index'])->name('kriteria');
+Route::get('/kriteria/create', [KriteriaController::class, 'create'])->name('kriteria.create');
+Route::post('/kriteria', [KriteriaController::class, 'store'])->name('kriteria.store');
+Route::get('/kriteria/{id}/edit', [KriteriaController::class, 'edit'])->name('kriteria.edit');
+Route::put('/kriteria/{id}', [KriteriaController::class, 'update'])->name('kriteria.update');
+Route::delete('/kriteria/{id}', [KriteriaController::class, 'destroy'])->name('kriteria.destroy');

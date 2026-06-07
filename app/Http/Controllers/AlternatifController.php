@@ -1,54 +1,53 @@
-<?php
+    <?php
 
-namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-use App\Models\Alternatif; // Pastikan memanggil model
-use Illuminate\Http\Request;
+    use App\Models\Alternatif;
+    use Illuminate\Http\Request;
 
-class AlternatifController extends Controller
-{
-    // 1. Menampilkan halaman index utama (tabel data)
-    public function index()
+    class AlternatifController extends Controller
     {
-        $alternatifs = Alternatif::orderBy('created_at', 'desc')->paginate(10);
-        return view('alternatif.index', compact('alternatifs'));
-    }
+        // 1. Menampilkan halaman index utama (tabel data)
+        public function index()
+        {
+            // Menggunakan DB::table sementara agar membypass kendala join global scope table perhitungan yang belum ada
+            $alternatifs = \DB::table('alternatifs')->orderBy('id', 'desc')->paginate(10);
 
-    // 2. Menampilkan formulir tambah data warga
-    public function create()
-    {
-        return view('alternatif.create');
-    }
+            return view('alternatif.index', compact('alternatifs'));
+        }
 
-    // 3. Menyimpan data warga baru ke database
-    public function store(Request $request)
-    {
-        // Proses Validasi input form
-        $request->validate([
-            'nik'     => 'required|numeric|digits:16|unique:alternatifs,nik',
-            'nama'    => 'required|string|max:255',
-            'alamat'  => 'required|string',
-            'no_telp' => 'required|string|max:20',
-            'status'  => 'required|in:Terverifikasi,Review,Ditolak',
-        ], [
-            'nik.required' => 'NIK wajib diisi.',
-            'nik.digits'   => 'NIK harus tepat berukuran 16 digit.',
-            'nik.unique'   => 'NIK ini sudah terdaftar di sistem.',
-            'nama.required' => 'Nama Kepala Keluarga wajib diisi.',
-        ]);
+        // 2. Menampilkan formulir tambah data warga
+        public function create()
+        {
+            return view('alternatif.create');
+        }
 
-        // Simpan ke database
-        Alternatif::create([
-            'nik'     => $request->nik,
-            'nama'    => $request->nama,
-            'alamat'  => $request->alamat,
-            'no_telp' => $request->no_telp,
-            'status'  => $request->status,
-        ]);
+        // 3. Menyimpan data warga baru ke database
+        public function store(Request $request)
+        {
+            $request->validate([
+                'nik'     => 'required|numeric|digits:16|unique:alternatifs,nik',
+                'nama'    => 'required|string|max:255',
+                'alamat'  => 'required|string',
+                'no_telp' => 'required|string|max:20',
+                'status'  => 'required|in:Terverifikasi,Review,Ditolak',
+            ], [
+                'nik.required' => 'NIK wajib diisi.',
+                'nik.digits'   => 'NIK harus tepat berukuran 16 digit.',
+                'nik.unique'   => 'NIK ini sudah terdaftar di sistem.',
+                'nama.required' => 'Nama Kepala Keluarga wajib diisi.',
+            ]);
 
-        // Kembalikan ke halaman utama dengan notifikasi sukses
-        return redirect()->route('alternatif.index')->with('success', 'Data warga berhasil ditambahkan!');
-    }
+            Alternatif::create([
+                'nik'     => $request->nik,
+                'nama'    => $request->nama,
+                'alamat'  => $request->alamat,
+                'no_telp' => $request->no_telp,
+                'status'  => $request->status,
+            ]);
+
+            return redirect()->route('alternatif.index')->with('success', 'Data warga berhasil ditambahkan!');
+        }
 
         // 4. Menghapus data alternatif warga
         public function destroy($id)
@@ -58,10 +57,11 @@ class AlternatifController extends Controller
 
             return redirect()->route('alternatif.index')->with('success', 'Data warga berhasil dihapus.');
         }
+
         // 5. Menampilkan halaman form edit beserta data warga yang dipilih
         public function edit($id)
         {
-            // Cari data warga berdasarkan id, jika tidak ketemu langsung error 404
+            // Cari data warga berdasarkan id, jika tidak ditemukan otomatis memicu error 404
             $warga = Alternatif::findOrFail($id); 
             
             return view('alternatif.edit', compact('warga'));
@@ -72,9 +72,7 @@ class AlternatifController extends Controller
         {
             $warga = Alternatif::findOrFail($id);
 
-            // Proses validasi data baru
             $request->validate([
-                // Abaikan pengecekan unique NIK untuk data milik warga ini sendiri
                 'nik'     => 'required|numeric|digits:16|unique:alternatifs,nik,' . $warga->id,
                 'nama'    => 'required|string|max:255',
                 'alamat'  => 'required|string',
@@ -87,7 +85,6 @@ class AlternatifController extends Controller
                 'nama.required' => 'Nama Kepala Keluarga wajib diisi.',
             ]);
 
-            // Update data ke database
             $warga->update([
                 'nik'     => $request->nik,
                 'nama'    => $request->nama,
@@ -96,7 +93,6 @@ class AlternatifController extends Controller
                 'status'  => $request->status,
             ]);
 
-            // Redirect kembali ke halaman utama dengan pesan sukses
             return redirect()->route('alternatif.index')->with('success', 'Data warga berhasil diperbarui!');
         }
-}
+    }

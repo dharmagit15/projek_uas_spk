@@ -33,15 +33,15 @@ class KriteriaController extends Controller
         // Ambil semua data KECUALI _token agar tidak eror mass assignment
         Kriteria::create($request->except('_token'));
         
-        // Tetap menggunakan 'success' -> Hijau
-        return redirect()->route('kriteria')->with('success', 'Kriteria berhasil ditambahkan!');
+        // PERBAIKAN: Mengubah 'kriteria' menjadi 'kriteria.index'
+        return redirect()->route('kriteria.index')->with('success', 'Kriteria berhasil ditambahkan!');
     }
 
     // Mengarahkan ke halaman resources/views/kriteria/edit.blade.php
     public function edit($id)
     {
-        $kriteria = Kriteria::findOrFail($id);
-        return view('kriteria.edit', compact('kriteria'));
+        $kcriteria = Kriteria::findOrFail($id);
+        return view('kcriteria.edit', compact('kriteria'));
     }
 
     // Memproses Pembaruan Data Kriteria Lama
@@ -59,8 +59,8 @@ class KriteriaController extends Controller
         // Buang _token dan _method PUT sebelum diupdate ke database
         $kriteria->update($request->except(['_token', '_method']));
         
-        // DIUBAH: Menggunakan 'info' -> Biru
-        return redirect()->route('kriteria')->with('info', 'Kriteria berhasil diperbarui!');
+        // PERBAIKAN: Mengubah 'kriteria' menjadi 'kriteria.index'
+        return redirect()->route('kriteria.index')->with('info', 'Kriteria berhasil diperbarui!');
     }
 
     // Memproses Penghapusan Data Kriteria
@@ -69,7 +69,7 @@ class KriteriaController extends Controller
         $kriteria = Kriteria::findOrFail($id);
         $kriteria->delete();
         
-        // DIUBAH: Menggunakan 'danger' -> Merah
-        return redirect()->route('kriteria')->with('danger', 'Kriteria berhasil dihapus!');
+        // PERBAIKAN: Mengubah 'kriteria' menjadi 'kriteria.index'
+        return redirect()->route('kriteria.index')->with('danger', 'Kriteria berhasil dihapus!');
     }
 }
